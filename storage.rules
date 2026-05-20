@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // 所有素材為公開唯讀
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if false;  // 僅透過 Admin SDK 上傳
+    }
+  }
+}

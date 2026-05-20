@@ -1,0 +1,35 @@
+{
+  "name": "coin-quest-functions",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "seed:levels": "FIRESTORE_EMULATOR_HOST=localhost:8080 npx tsx src/seed/levels.ts",
+    "seed:fateCards": "FIRESTORE_EMULATOR_HOST=localhost:8080 npx tsx src/seed/fateCards.ts",
+    "seed:insurance": "FIRESTORE_EMULATOR_HOST=localhost:8080 npx tsx src/seed/insuranceProducts.ts",
+    "seed:stocks": "FIRESTORE_EMULATOR_HOST=localhost:8080 npx tsx src/seed/stocks.ts",
+    "seed:courses": "FIRESTORE_EMULATOR_HOST=localhost:8080 npx tsx src/seed/courses.ts",
+    "seed:prod:levels": "npx tsx src/seed/levels.ts",
+    "seed:prod:fateCards": "npx tsx src/seed/fateCards.ts",
+    "seed:prod:insurance": "npx tsx src/seed/insuranceProducts.ts",
+    "seed:prod:stocks": "npx tsx src/seed/stocks.ts",
+    "seed:prod:courses": "npx tsx src/seed/courses.ts"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.4.0",
+    "firebase-functions": "^6.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "private": true
+}

@@ -1,0 +1,14 @@
+{
+  "name": "generate-art-asset",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gemini 圖片生成 + 浮水印移除 + 去背",
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "sharp": "^0.33.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "typescript": "^5.7.0"
+  }
+}

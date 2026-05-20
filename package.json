@@ -1,0 +1,16 @@
+{
+  "name": "coin-quest",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "preview": "cd frontend && npm run preview",
+    "deploy": "npm run build && firebase deploy",
+    "deploy:dev": "npm run build && firebase deploy",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:hosting": "npm run build && firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage",
+    "emulators": "firebase emulators:start --import=./emulator-data --export-on-exit"
+  }
+}

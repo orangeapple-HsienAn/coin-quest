@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 判斷是否為 admin
+    function isAdmin() {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // 使用者只能讀寫自己的資料
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /{subcollection}/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // 公開唯讀 + admin 可寫
+    match /courses/{courseId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+      match /chapters/{chapterId} {
+        allow read: if request.auth != null;
+        allow write: if isAdmin();
+      }
+    }
+
+    match /stocks/{stockId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    match /levels/{level} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    match /insuranceProducts/{productId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    match /fateCards/{cardId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    match /dailyTaskPool/{taskId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    match /config/{docId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+  }
+}

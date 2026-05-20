@@ -1,0 +1,73 @@
+@import 'tailwindcss';
+
+/* 自訂主題變數（根據 visual-spec.md） */
+@theme {
+  /* 主色調 */
+  --color-primary: #F5A623;
+  --color-coral: #FF7B54;
+  --color-teal: #4ECDC4;
+  --color-cream-yellow: #FCD667;
+  --color-soft-orange: #FFAD60;
+
+  /* 功能色（馬卡龍色系） */
+  --color-cash-green: #1BC49F;
+  --color-invest-orange: #FFBD4A;
+  --color-savings-pink: #FF7E6B;
+  --color-insurance-gray: #EAEAEA;
+  --color-gain-green: #4CAF50;
+  --color-loss-red: #F44336;
+
+  /* 中性色 */
+  --color-text-primary: #2D2D2D;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-text-insurance: #555555;
+  --color-bg-cream: #FFF9F0;
+  --color-bg-white: #FFFFFF;
+  --color-table-dark: #2D3436;
+
+  /* 等級色帶 */
+  --color-level-current: #4ECDC4;
+  --color-level-next: #F5A623;
+  --color-exp-bar-bg: #FFE0B2;
+  --color-exp-bar-fill: #FF7043;
+
+  /* 字型大小 */
+  --font-size-h1: 32px;
+  --font-size-h2: 24px;
+  --font-size-h3: 20px;
+  --font-size-body: 16px;
+  --font-size-caption: 14px;
+  --font-size-small: 12px;
+
+  /* 圓角 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* 陰影 */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.16);
+  --shadow-button: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 基礎樣式 */
+body {
+  font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  /* 淺橘色背景 + 橘色格紋 */
+  background-color: #FFF5EC;
+  background-image:
+    linear-gradient(rgba(245, 166, 35, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 166, 35, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--color-text-primary);
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* 數字字型（等寬） */
+.font-mono-number {
+  font-variant-numeric: tabular-nums;
+}

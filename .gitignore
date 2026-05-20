@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+
+# Cloud Functions build output
+functions/lib/
+
+# Emulator data
+emulator-data/
+firebase-export-*/
+
+# Test
+coverage/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Service account keys (絕對不能 commit！)
+*-adminsdk-*.json
+*-firebase-adminsdk*.json
+oafq-cms-*.json
+.secrets/
