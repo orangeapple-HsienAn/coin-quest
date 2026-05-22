@@ -25,13 +25,18 @@ export const functions = getFunctions(app, 'asia-east1')
 export const storage = getStorage(app)
 
 // 開發環境連接 Emulator
-if (import.meta.env.DEV) {
+// TODO: 暫時關閉 Emulator 連線、直接連 production（因為本機尚未裝 Java/Emulator）。
+//       課程同步系統上線、Emulator 環境補齊後請把下方 if 區塊恢復。
+const USE_EMULATOR = false
+if (import.meta.env.DEV && USE_EMULATOR) {
   console.log('🔧 開發模式：連接 Firebase Emulators...')
   console.log('   請確認已執行 npm run emulators')
   connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true })
   connectFirestoreEmulator(db, 'localhost', 8080)
   connectFunctionsEmulator(functions, 'localhost', 5001)
   connectStorageEmulator(storage, 'localhost', 9199)
+} else if (import.meta.env.DEV) {
+  console.warn('⚠️ DEV 模式直接連 production Firebase（emulator 已暫時停用）')
 }
 
 export default app
