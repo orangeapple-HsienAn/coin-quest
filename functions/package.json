@@ -19,7 +19,8 @@
     "seed:prod:fateCards": "npx tsx src/seed/fateCards.ts",
     "seed:prod:insurance": "npx tsx src/seed/insuranceProducts.ts",
     "seed:prod:stocks": "npx tsx src/seed/stocks.ts",
-    "seed:prod:courses": "npx tsx src/seed/courses.ts"
+    "seed:prod:courses": "npx tsx src/seed/courses.ts",
+    "snapshot:cms": "npx tsx scripts/snapshot-cms-lesson.ts"
   },
   "engines": {
     "node": "22"

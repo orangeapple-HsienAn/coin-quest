@@ -49,3 +49,6 @@ coverage/
 *-firebase-adminsdk*.json
 oafq-cms-*.json
 .secrets/
+
+# Local CMS snapshot (本機暫存的 CMS 課程資料快照，含大量媒體檔)
+data/cms-snapshot/
