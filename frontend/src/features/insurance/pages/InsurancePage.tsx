@@ -98,7 +98,7 @@ export function InsurancePage() {
       <Header
         experience={user?.experience ?? 0}
         coins={user?.coins ?? 0}
-        displayName={user?.displayName ?? '玩家'}
+        displayName={user?.displayName ?? '叩叮'}
         backTo="/"
       />
 

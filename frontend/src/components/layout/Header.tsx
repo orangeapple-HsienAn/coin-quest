@@ -16,7 +16,7 @@ interface HeaderProps {
  * 頁面頂部 Header（統一資訊列）
  * 包含 返回按鈕/Logo、經驗值、金幣數量、個人頭像
  */
-export function Header({ experience = 0, coins = 0, displayName = '玩家', backTo }: HeaderProps) {
+export function Header({ experience = 0, coins = 0, displayName = '叩叮', backTo }: HeaderProps) {
   const { user } = useAuth()
 
   const handleSignOut = async () => {

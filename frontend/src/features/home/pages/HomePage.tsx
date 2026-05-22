@@ -53,7 +53,7 @@ export function HomePage() {
       <Header
         experience={user?.experience ?? 0}
         coins={user?.coins ?? 0}
-        displayName={user?.displayName ?? '玩家'}
+        displayName={user?.displayName ?? '叩叮'}
       />
 
       <main className="mx-auto max-w-[1200px] px-6 py-8">
