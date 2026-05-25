@@ -14,7 +14,7 @@ export function CourseDetailPage() {
   const { data: user } = useUser()
   const { data, loading, error } = useLesson(courseId ?? '')
 
-  const chapters = data ? buildChapters(data.units) : []
+  const chapters = data ? buildChapters(data.units, data.language) : []
 
   return (
     <div className="min-h-screen bg-background">
@@ -32,6 +32,7 @@ export function CourseDetailPage() {
             <SerpentinePath
               chapters={chapters}
               hrefFor={(c) => `/course/${courseId}/chapter/${c.id}`}
+              language={data.language}
             />
           </>
         )}

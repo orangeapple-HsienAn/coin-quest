@@ -6,6 +6,8 @@
  */
 import { Link } from 'react-router'
 import type { ChapterType } from '../lib/types'
+import type { Language } from '../lib/lessonKey'
+import { getChapterTypeLabel } from '../lib/gameTranslations'
 
 interface ChapterNodeProps {
   chapterId: string
@@ -13,17 +15,19 @@ interface ChapterNodeProps {
   title: string
   completed: boolean
   href: string
+  language?: Language
 }
 
-const TYPE_META: Record<ChapterType, { label: string; emoji: string }> = {
-  story: { label: '小故事', emoji: '📖' },
-  knowledge: { label: '小知識', emoji: '🔍' },
-  quiz: { label: '小考驗', emoji: '📋' },
-  game: { label: '小遊戲', emoji: '🕹️' },
+const TYPE_EMOJI: Record<ChapterType, string> = {
+  story: '📖',
+  knowledge: '🔍',
+  quiz: '📋',
+  game: '🕹️',
 }
 
-export function ChapterNode({ type, title, completed, href }: ChapterNodeProps) {
-  const meta = TYPE_META[type]
+export function ChapterNode({ type, title, completed, href, language = 'zh' }: ChapterNodeProps) {
+  const label = getChapterTypeLabel(type, language)
+  const emoji = TYPE_EMOJI[type]
 
   // 配色 token（淺色 = 卡片底、深色 = pill 與邊框）
   const palette = completed
@@ -51,7 +55,7 @@ export function ChapterNode({ type, title, completed, href }: ChapterNodeProps) 
       <div
         className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${palette.iconBg} text-3xl shadow-card`}
       >
-        {meta.emoji}
+        {emoji}
       </div>
 
       {/* 右側：類型 pill + 標題對話框 */}
@@ -60,7 +64,7 @@ export function ChapterNode({ type, title, completed, href }: ChapterNodeProps) 
         <span
           className={`self-start rounded-md px-2 py-0.5 text-xs font-bold text-white ${palette.pillBg}`}
         >
-          {meta.label}
+          {label}
         </span>
         {/* 標題對話框 */}
         <div

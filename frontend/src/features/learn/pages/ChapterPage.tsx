@@ -13,19 +13,15 @@ import { GameView } from '../views/GameView'
 import { KnowledgeView } from '../views/KnowledgeView'
 import { StoryView } from '../views/StoryView'
 import { completeChapter } from '../lib/completeChapter'
-
-const CHAPTER_TYPE_NAMES: Record<string, string> = {
-  story: '小故事',
-  knowledge: '小知識',
-  quiz: '小考驗',
-  game: '小遊戲',
-}
+import { parseLessonKey } from '../lib/lessonKey'
+import { getChapterTypeLabel, getUnitNameI18n } from '../lib/gameTranslations'
 
 export function ChapterPage() {
   const { courseId, chapterId } = useParams<{ courseId: string; chapterId: string }>()
   const navigate = useNavigate()
   const { data: user } = useUser()
   const { data: content, loading, error } = useChapterContent(courseId ?? '', chapterId ?? '')
+  const { language } = parseLessonKey(courseId ?? '')
 
   const backToCourse = `/course/${courseId}`
   const handleNext = () => navigate(backToCourse)
@@ -54,7 +50,10 @@ export function ChapterPage() {
         {content && (
           <>
             <h1 className="mb-6 text-center text-xl font-bold">
-              {CHAPTER_TYPE_NAMES[content.type]} · {content.type === 'game' ? content.unitName : content.sectionName}
+              {getChapterTypeLabel(content.type, language)} ·{' '}
+              {content.type === 'game'
+                ? getUnitNameI18n(content.unitId, content.unitName, language)
+                : content.sectionName}
             </h1>
 
             {content.type === 'quiz' && (
@@ -62,7 +61,12 @@ export function ChapterPage() {
             )}
 
             {content.type === 'game' && (
-              <GameView content={content} onComplete={handleComplete} onNext={handleNext} />
+              <GameView
+                content={content}
+                language={language}
+                onComplete={handleComplete}
+                onNext={handleNext}
+              />
             )}
 
             {content.type === 'knowledge' && courseId && (

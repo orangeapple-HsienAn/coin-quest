@@ -8,14 +8,16 @@ import type { GameContent } from '../hooks/useChapterContent'
 import { GameFrame } from '../components/GameFrame'
 import { GameResultCard } from '../components/result/GameResultCard'
 import { computeStars, coinsForStars } from '../lib/gameScoring'
+import type { Language } from '../lib/lessonKey'
 
 interface GameViewProps {
   content: GameContent
+  language?: Language
   onComplete: (params: { experienceReward: number; coinReward: number }) => void
   onNext: () => void
 }
 
-export function GameView({ content, onComplete, onNext }: GameViewProps) {
+export function GameView({ content, language = 'zh', onComplete, onNext }: GameViewProps) {
   const [score, setScore] = useState<number | null>(null)
   const [playCount, setPlayCount] = useState(0) // 換 key 強制 iframe reload
 
@@ -29,8 +31,9 @@ export function GameView({ content, onComplete, onNext }: GameViewProps) {
   if (score === null) {
     return (
       <GameFrame
-        key={`game-${playCount}`}
+        key={`game-${playCount}-${language}`}
         htmlUrl={content.gameHtmlUrl}
+        language={language}
         onResult={handleResult}
       />
     )
@@ -41,6 +44,7 @@ export function GameView({ content, onComplete, onNext }: GameViewProps) {
       <GameResultCard
         score={score}
         stars={computeStars(score)}
+        language={language}
         onReplay={() => {
           setScore(null)
           setPlayCount((c) => c + 1)

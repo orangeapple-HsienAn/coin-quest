@@ -5,19 +5,28 @@
  * - 再玩一次（黃）/ 前往下個章節（綠）
  */
 import { STAR_COIN_REWARDS } from '../../lib/gameScoring'
+import { t } from '../../lib/gameTranslations'
+import type { Language } from '../../lib/lessonKey'
 
 interface GameResultCardProps {
   score: number
   stars: number
+  language?: Language
   onReplay: () => void
   onNext: () => void
 }
 
-export function GameResultCard({ score, stars, onReplay, onNext }: GameResultCardProps) {
+export function GameResultCard({
+  score,
+  stars,
+  language = 'zh',
+  onReplay,
+  onNext,
+}: GameResultCardProps) {
   return (
     <div className="mx-auto max-w-xl rounded-3xl bg-white px-10 py-10 text-center shadow-card">
       <h2 className="mb-6 text-3xl font-bold">
-        獲得 <span className="text-[#FF6B6B]">{score}</span> 分
+        {t('獲得', language)} <span className="text-[#FF6B6B]">{score}</span> {t('分', language)}
       </h2>
 
       <div className="mb-8 space-y-2">
@@ -48,13 +57,13 @@ export function GameResultCard({ score, stars, onReplay, onNext }: GameResultCar
           onClick={onReplay}
           className="rounded-xl bg-[#FFC857] px-6 py-3 font-bold text-white shadow-card transition hover:scale-105 active:scale-95"
         >
-          再玩一次
+          {t('再玩一次', language)}
         </button>
         <button
           onClick={onNext}
           className="rounded-xl bg-[#4ECDC4] px-6 py-3 font-bold text-white shadow-card transition hover:scale-105 active:scale-95"
         >
-          前往下個章節
+          {t('前往下個章節', language)}
         </button>
       </div>
     </div>

@@ -4,11 +4,15 @@
  * - 兩種「遊戲結束」訊號：
  *    A. iframe 內 postMessage({type:'GAME_RESULT', score, maxScore})（CMS v0.14.0+）
  *    B. 使用者手動點外部「完成遊戲」按鈕，從 iframe DOM 讀 #score-val 文字
+ * - 多語：language='ja' 時 fetch HTML、跑 translateGameHtml 後用 srcDoc 注入
  */
 import { useEffect, useRef, useState } from 'react'
+import type { Language } from '../lib/lessonKey'
+import { translateGameHtml } from '../lib/gameTranslations'
 
 interface GameFrameProps {
   htmlUrl: string
+  language?: Language
   onResult: (score: number) => void
 }
 
@@ -27,9 +31,36 @@ function isGameResultMessage(d: unknown): d is GameResultMessage {
   )
 }
 
-export function GameFrame({ htmlUrl, onResult }: GameFrameProps) {
+export function GameFrame({ htmlUrl, language = 'zh', onResult }: GameFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [reported, setReported] = useState(false)
+  const [srcDoc, setSrcDoc] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<string | null>(null)
+
+  // 載入 HTML：zh 直接 src、ja 走 srcDoc + 翻譯
+  useEffect(() => {
+    if (language === 'zh') {
+      setSrcDoc(null)
+      return
+    }
+    let cancelled = false
+    fetch(htmlUrl)
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return r.text()
+      })
+      .then((html) => {
+        if (cancelled) return
+        setSrcDoc(translateGameHtml(html, language))
+      })
+      .catch((e) => {
+        if (cancelled) return
+        setLoadError(String(e))
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [htmlUrl, language])
 
   // 監聽 iframe 內 postMessage
   useEffect(() => {
@@ -62,23 +93,33 @@ export function GameFrame({ htmlUrl, onResult }: GameFrameProps) {
     onResult(score)
   }
 
+  // 等翻譯版 HTML 載好才渲染 iframe（避免閃一下中文）
+  const isReady = language === 'zh' || srcDoc !== null || loadError !== null
+
   return (
     <div className="flex w-full items-center justify-center gap-6">
-      {/* 16:9 遊戲容器 — 外層黃色 padding 框 */}
       <div className="w-full max-w-4xl rounded-3xl bg-[#FFC857] p-3 shadow-card">
         <div className="relative w-full overflow-hidden rounded-2xl" style={{ paddingBottom: '56.25%' }}>
-          <iframe
-            ref={iframeRef}
-            src={htmlUrl}
-            title="課程小遊戲"
-            className="absolute inset-0 h-full w-full border-0"
-            // 允許 iframe 與父視窗 postMessage、同源 DOM 存取
-            sandbox="allow-scripts allow-same-origin"
-          />
+          {loadError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white text-red-500">
+              遊戲載入失敗：{loadError}
+            </div>
+          )}
+          {!isReady && !loadError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white">載入中...</div>
+          )}
+          {isReady && !loadError && (
+            <iframe
+              ref={iframeRef}
+              {...(language === 'zh' ? { src: htmlUrl } : { srcDoc: srcDoc ?? '' })}
+              title="課程小遊戲"
+              className="absolute inset-0 h-full w-full border-0"
+              sandbox="allow-scripts allow-same-origin"
+            />
+          )}
         </div>
       </div>
 
-      {/* 手動完成按鈕（fallback for 舊版未內建 postMessage 的遊戲） */}
       <button
         type="button"
         onClick={handleManualFinish}

@@ -9,10 +9,12 @@
 import { Fragment } from 'react'
 import type { ChapterItem } from '../hooks/useChapters'
 import { ChapterNode } from './ChapterNode'
+import type { Language } from '../lib/lessonKey'
 
 interface SerpentinePathProps {
   chapters: ChapterItem[]
   hrefFor: (chapter: ChapterItem) => string
+  language?: Language
 }
 
 const PER_ROW = 4
@@ -23,7 +25,7 @@ const ROW_GAP_PX = 64
 const U_SHAPE_HEIGHT = 154 // ≈ 卡片高度 90 + ROW_GAP 64，連到下一行 icon 中心
 const DASH = 'border-2 border-dashed border-[#E8B963]'
 
-export function SerpentinePath({ chapters, hrefFor }: SerpentinePathProps) {
+export function SerpentinePath({ chapters, hrefFor, language = 'zh' }: SerpentinePathProps) {
   // 切成多個 row（每 row 4 個 chapter）
   const rows: ChapterItem[][] = []
   for (let i = 0; i < chapters.length; i += PER_ROW) {
@@ -96,6 +98,7 @@ export function SerpentinePath({ chapters, hrefFor }: SerpentinePathProps) {
                     title={c.title}
                     completed={c.completed}
                     href={hrefFor(c)}
+                    language={language}
                   />
                 ) : (
                   <Fragment key={`empty-${rowIdx}-${i}`} />
