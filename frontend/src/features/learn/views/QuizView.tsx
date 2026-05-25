@@ -9,16 +9,18 @@ import { QuizQuestion } from '../components/QuizQuestion'
 import { QuizExplanation } from '../components/QuizExplanation'
 import { QuizResultCard } from '../components/result/QuizResultCard'
 import { NextArrowButton } from '../components/NextArrowButton'
+import type { Language } from '../lib/lessonKey'
 
 interface QuizViewProps {
   content: QuizContent
+  language?: Language
   onComplete: (params: { experienceReward: number; coinReward: number }) => void
   onNext: () => void
 }
 
 type Phase = 'answering' | 'reviewing' | 'result'
 
-export function QuizView({ content, onComplete, onNext }: QuizViewProps) {
+export function QuizView({ content, language = 'zh', onComplete, onNext }: QuizViewProps) {
   const { questions } = content
   const total = questions.length
 
@@ -45,6 +47,7 @@ export function QuizView({ content, onComplete, onNext }: QuizViewProps) {
           totalCount={total}
           experienceReward={experienceReward}
           coinReward={coinReward}
+          language={language}
           onReplay={() => {
             // 再看一次：回到第一題、進入唯讀的詳解模式
             setReviewMode(true)

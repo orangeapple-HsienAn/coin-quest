@@ -13,12 +13,14 @@ import { UnitPlayer } from '../components/UnitPlayer'
 import { NextArrowButton } from '../components/NextArrowButton'
 import { StoryChoiceCards } from '../components/StoryChoiceCards'
 import { StoryResultCard } from '../components/result/StoryResultCard'
+import type { Language } from '../lib/lessonKey'
 
 type Phase = 'playing' | 'choosing' | 'result'
 
 interface StoryViewProps {
   lessonKey: string
   content: StoryContent
+  language?: Language
   onComplete: (params: { experienceReward: number; coinReward: number }) => void
   onNext: () => void
   onBackToTopic: () => void
@@ -27,6 +29,7 @@ interface StoryViewProps {
 export function StoryView({
   lessonKey,
   content,
+  language = 'zh',
   onComplete,
   onNext,
   onBackToTopic,
@@ -48,6 +51,7 @@ export function StoryView({
           title={ending.title}
           description={ending.description}
           experienceReward={ending.score}
+          language={language}
           onSeeOthers={() => {
             // 回到選項頁，重新挑（保留影片不重播）
             setPhase('choosing')

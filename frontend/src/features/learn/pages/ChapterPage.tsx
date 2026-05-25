@@ -57,7 +57,12 @@ export function ChapterPage() {
             </h1>
 
             {content.type === 'quiz' && (
-              <QuizView content={content} onComplete={handleComplete} onNext={handleNext} />
+              <QuizView
+                content={content}
+                language={language}
+                onComplete={handleComplete}
+                onNext={handleNext}
+              />
             )}
 
             {content.type === 'game' && (
@@ -73,6 +78,7 @@ export function ChapterPage() {
               <KnowledgeView
                 lessonKey={courseId}
                 content={content}
+                language={language}
                 onComplete={handleComplete}
                 onNext={handleNext}
                 onBackToTopic={handleNext}
@@ -83,6 +89,7 @@ export function ChapterPage() {
               <StoryView
                 lessonKey={courseId}
                 content={content}
+                language={language}
                 onComplete={handleComplete}
                 onNext={handleNext}
                 onBackToTopic={handleNext}

@@ -11,12 +11,14 @@ import type { KnowledgeContent } from '../hooks/useChapterContent'
 import { UnitPlayer } from '../components/UnitPlayer'
 import { NextArrowButton } from '../components/NextArrowButton'
 import { KnowledgeResultCard } from '../components/result/KnowledgeResultCard'
+import type { Language } from '../lib/lessonKey'
 
 const EXP_REWARD = 50
 
 interface KnowledgeViewProps {
   lessonKey: string
   content: KnowledgeContent
+  language?: Language
   onComplete: (params: { experienceReward: number; coinReward: number }) => void
   onNext: () => void
   /** 回到主題（章節列表）— 由上層提供，與 onNext 相同目的地但不發獎勵 */
@@ -26,6 +28,7 @@ interface KnowledgeViewProps {
 export function KnowledgeView({
   lessonKey,
   content,
+  language = 'zh',
   onComplete,
   onNext,
   onBackToTopic,
@@ -39,6 +42,7 @@ export function KnowledgeView({
       <div className="flex w-full justify-center py-6">
         <KnowledgeResultCard
           experienceReward={EXP_REWARD}
+          language={language}
           onReplay={() => {
             setPhase('playing')
             setVideoEnded(false)
