@@ -4,7 +4,7 @@
  * Figma 設計的金幣對照：
  *   1★ → +50
  *   2★ → +100
- *   3★ → +200
+ *   3★ → +150
  *
  * 星級門檻：CMS 端 publishedGames 之後會加 scoreThresholds 欄位，
  * 在那之前，使用以下預設值（之後接 CMS 資料時改成讀 meta.scoreThresholds）。
@@ -21,7 +21,7 @@ export const DEFAULT_SCORE_THRESHOLDS: ScoreThresholds = {
   star3: 90,
 }
 
-export const STAR_COIN_REWARDS = [0, 50, 100, 200] as const // index = 星數
+export const STAR_COIN_REWARDS = [0, 50, 100, 150] as const // index = 星數
 
 export function computeStars(score: number, thresholds: ScoreThresholds = DEFAULT_SCORE_THRESHOLDS): number {
   if (score >= thresholds.star3) return 3

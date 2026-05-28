@@ -50,5 +50,5 @@ coverage/
 oafq-cms-*.json
 .secrets/
 
-# Local CMS snapshot (本機暫存的 CMS 課程資料快照，含大量媒體檔)
-data/cms-snapshot/
+# Local 暫存資料（CMS 快照、coin-quest dump 等，含大量媒體檔，不進版控）
+data/
