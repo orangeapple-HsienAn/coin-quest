@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useUser } from '@/hooks/useUser'
 import { Header } from '@/components/layout/Header'
 import { formatCoin } from '@/lib/utils'
+import { tUI } from '@/lib/uiStrings'
 import type { InsuranceProduct, UserInsurance } from '@/types'
 
 /**
@@ -98,20 +99,20 @@ export function InsurancePage() {
       <Header
         experience={user?.experience ?? 0}
         coins={user?.coins ?? 0}
-        displayName={user?.displayName ?? '叩叮'}
+        displayName={user?.displayName ?? tUI('叩叮')}
         backTo="/"
       />
 
       <main className="mx-auto max-w-[800px] px-6 py-8">
         {/* 標題 */}
         <h1 className="mb-6 text-center text-xl font-bold text-primary">
-          🛡️ 保險中心 🛡️
+          {tUI('🛡️ 保險中心 🛡️')}
         </h1>
 
         {/* 說明文字 */}
         <div className="mb-6 rounded-[12px] bg-teal/10 px-4 py-3">
           <p className="text-sm text-teal">
-            購買保險可以在遭遇風險事件時獲得理賠，降低損失！
+            {tUI('購買保險可以在遭遇風險事件時獲得理賠，降低損失！')}
           </p>
         </div>
 
@@ -139,19 +140,19 @@ export function InsurancePage() {
 
                       <div className="mt-3 flex flex-wrap gap-4 text-sm">
                         <div>
-                          <span className="text-text-tertiary">理賠金額：</span>
+                          <span className="text-text-tertiary">{tUI('理賠金額：')}</span>
                           <span className="font-mono-number font-medium text-gain-green">
                             ${formatCoin(product.claimAmount)}
                           </span>
                         </div>
                         <div>
-                          <span className="text-text-tertiary">效期：</span>
+                          <span className="text-text-tertiary">{tUI('效期：')}</span>
                           <span className="font-medium text-text-primary">
-                            {product.durationDays} 天
+                            {product.durationDays} {tUI('天')}
                           </span>
                         </div>
                         <div>
-                          <span className="text-text-tertiary">費用：</span>
+                          <span className="text-text-tertiary">{tUI('費用：')}</span>
                           <span className="font-mono-number font-medium text-invest-orange">
                             ${formatCoin(product.premium)}
                           </span>
@@ -162,11 +163,11 @@ export function InsurancePage() {
                     <div className="ml-4">
                       {isActive ? (
                         <div className="rounded-full bg-teal/10 px-4 py-2 text-sm font-medium text-teal">
-                          享有保障
+                          {tUI('享有保障')}
                         </div>
                       ) : userInsurance && !isActive ? (
                         <div className="rounded-full bg-orange-100 px-4 py-2 text-sm font-medium text-orange-600">
-                          已過期
+                          {tUI('已過期')}
                         </div>
                       ) : null}
                     </div>
@@ -178,8 +179,8 @@ export function InsurancePage() {
                     return (
                       <div className="mt-4">
                         <div className="flex items-center justify-between text-xs text-text-tertiary">
-                          <span>剩餘效期</span>
-                          <span>{days}天 {hours}時 {minutes}分</span>
+                          <span>{tUI('剩餘效期')}</span>
+                          <span>{days}{tUI('天')} {hours}{tUI('時')} {minutes}{tUI('分')}</span>
                         </div>
                         <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-200">
                           <div
@@ -196,7 +197,7 @@ export function InsurancePage() {
                   {/* 已過期：顯示保險效力已終止 */}
                   {userInsurance && !isActive && (
                     <div className="mt-4">
-                      <p className="text-center text-sm text-orange-600">保險效力已終止</p>
+                      <p className="text-center text-sm text-orange-600">{tUI('保險效力已終止')}</p>
                     </div>
                   )}
 
@@ -215,7 +216,7 @@ export function InsurancePage() {
                         disabled={buyMutation.isPending || !canBuy}
                         className="w-full rounded-[8px] bg-orange-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-orange-600 disabled:opacity-50"
                       >
-                        {buyMutation.isPending ? '處理中...' : `立即續保 $${formatCoin(product.premium)}`}
+                        {buyMutation.isPending ? tUI('處理中...') : `${tUI('立即續保')} $${formatCoin(product.premium)}`}
                       </button>
                     ) : (
                       <button
@@ -223,7 +224,7 @@ export function InsurancePage() {
                         disabled={buyMutation.isPending || !canBuy}
                         className="w-full rounded-[8px] bg-teal py-2.5 text-sm font-medium text-white transition-colors hover:bg-teal/90 disabled:opacity-50"
                       >
-                        {buyMutation.isPending ? '處理中...' : '購買保險'}
+                        {buyMutation.isPending ? tUI('處理中...') : tUI('購買保險')}
                       </button>
                     )}
                   </div>
@@ -234,7 +235,7 @@ export function InsurancePage() {
 
           {products.length === 0 && (
             <div className="py-8 text-center text-text-secondary">
-              尚無保險產品
+              {tUI('尚無保險產品')}
             </div>
           )}
         </div>

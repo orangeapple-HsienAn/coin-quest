@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { formatCoin } from '@/lib/utils'
 import { CoinIcon } from '@/components/icons/CoinIcon'
+import { tUI } from '@/lib/uiStrings'
 
 interface CheckInButtonProps {
   dailySalary: number
@@ -21,13 +22,13 @@ export function CheckInButton({ dailySalary, hasCheckedIn = false }: CheckInButt
       <div className="flex items-center gap-2">
         <span className="text-lg">✅</span>
         <span className="font-medium text-white">
-          {hasCheckedIn ? '已簽到' : '簽到'}
+          {hasCheckedIn ? tUI('已簽到') : tUI('簽到')}
         </span>
       </div>
 
       <div className="flex items-center gap-2">
         <span className="flex items-center gap-1 text-sm text-white">
-          <CoinIcon size={14} /> 日薪 {formatCoin(dailySalary)}
+          <CoinIcon size={14} /> {tUI('日薪')} {formatCoin(dailySalary)}
         </span>
         <span className="text-white">↗</span>
       </div>

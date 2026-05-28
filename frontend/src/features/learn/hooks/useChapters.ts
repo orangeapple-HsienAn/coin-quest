@@ -15,13 +15,19 @@ export interface ChapterItem {
   type: ChapterType
   /** 顯示在卡片上的小節標題 */
   title: string
-  /** 是否已完成（暫時全部 false，未來接 user progress） */
+  /** 是否已完成 */
   completed: boolean
+  /** CMS intro.sectionTeaser；吉祥物提示泡泡用 */
+  teaser?: string
 }
 
 const TYPE_ORDER: ChapterType[] = ['story', 'knowledge', 'quiz', 'game']
 
-export function buildChapters(units: LoadedUnit[], language: Language = 'zh'): ChapterItem[] {
+export function buildChapters(
+  units: LoadedUnit[],
+  language: Language = 'zh',
+  completedSet: Set<string> = new Set(),
+): ChapterItem[] {
   const out: ChapterItem[] = []
   for (const u of units) {
     for (const type of TYPE_ORDER) {
@@ -33,21 +39,26 @@ export function buildChapters(units: LoadedUnit[], language: Language = 'zh'): C
       //   - story/knowledge/quiz：優先用 translations 的 sectionName、缺則 zh sectionName、再缺用 unit.name
       //   - game：CMS translations 沒 game section，改用 UNIT_NAME_JA 對照表
       let title: string
+      let teaser: string | undefined
       if (type === 'game') {
         title = getUnitNameI18n(u.id, u.doc.name, language)
+        // game 沒有 intro/teaser；提示語留空走前端 hardcoded fallback
       } else {
-        const zhName = u.doc.components?.[type]?.versions?.[0]?.intro?.sectionName
-        const trName = u.translations?.[type]?.intro?.sectionName
-        title = trName || zhName || u.doc.name
+        const zhIntro = u.doc.components?.[type]?.versions?.[0]?.intro
+        const trIntro = u.translations?.[type]?.intro
+        title = trIntro?.sectionName || zhIntro?.sectionName || u.doc.name
+        teaser = trIntro?.sectionTeaser || zhIntro?.sectionTeaser
       }
 
+      const chapterId = `${u.id}-${type}`
       out.push({
-        id: `${u.id}-${type}`,
+        id: chapterId,
         unitId: u.id,
         unitName: u.doc.name,
         type,
         title,
-        completed: false,
+        completed: completedSet.has(chapterId),
+        teaser,
       })
     }
   }

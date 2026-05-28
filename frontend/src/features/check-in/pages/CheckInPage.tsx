@@ -11,6 +11,7 @@ import { Calendar } from '../components/Calendar'
 import { FateCardModal, InsuranceClaimModal } from '../components/FateCardModal'
 import { formatCoin } from '@/lib/utils'
 import { CoinIcon } from '@/components/icons/CoinIcon'
+import { tUI } from '@/lib/uiStrings'
 
 interface CheckInResult {
   success: boolean
@@ -149,7 +150,7 @@ export function CheckInPage() {
       <Header
         experience={user?.experience ?? 0}
         coins={user?.coins ?? 0}
-        displayName={user?.displayName ?? '叩叮'}
+        displayName={user?.displayName ?? tUI('叩叮')}
         backTo="/"
       />
 
@@ -188,7 +189,7 @@ export function CheckInPage() {
               <span className="text-5xl">🎲</span>
             </div>
             <p className="mb-6 text-center text-text-primary">
-              簽到時，將抽取命運卡。<br />確定現在要簽到了嗎？
+              {tUI('簽到時，將抽取命運卡。')}<br />{tUI('確定現在要簽到了嗎？')}
             </p>
             <div className="flex gap-3">
               <button
@@ -196,14 +197,14 @@ export function CheckInPage() {
                 disabled={checkInMutation.isPending}
                 className="flex-1 rounded-[8px] border border-gray-300 py-3 font-medium text-text-secondary disabled:opacity-50"
               >
-                取消
+                {tUI('取消')}
               </button>
               <button
                 onClick={handleConfirmCheckIn}
                 disabled={checkInMutation.isPending}
                 className="flex-1 rounded-[8px] bg-coral py-3 font-medium text-white disabled:opacity-70"
               >
-                {checkInMutation.isPending ? '簽到中...' : '我要簽到'}
+                {checkInMutation.isPending ? tUI('簽到中...') : tUI('我要簽到')}
               </button>
             </div>
           </div>
@@ -217,10 +218,10 @@ export function CheckInPage() {
             <div className="mb-4 flex justify-center">
               <span className="text-5xl">🎉</span>
             </div>
-            <h2 className="mb-2 text-center text-xl font-bold text-text-primary">簽到成功！</h2>
+            <h2 className="mb-2 text-center text-xl font-bold text-text-primary">{tUI('簽到成功！')}</h2>
             <p className="mb-4 text-center text-sm text-text-secondary">{todayDate}</p>
             <div className="mb-6 rounded-[12px] bg-green-50 px-4 py-4 text-center">
-              <p className="text-sm text-text-secondary">今日薪水</p>
+              <p className="text-sm text-text-secondary">{tUI('今日薪水')}</p>
               <p className="flex items-center justify-center gap-1 text-2xl font-bold text-teal">
                 <CoinIcon size={24} /> +{formatCoin(checkInResult.salary)}
               </p>
@@ -230,7 +231,7 @@ export function CheckInPage() {
               onClick={handleDrawFateCard}
               className="w-full rounded-[8px] bg-coral py-3 font-medium text-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
             >
-              🎲 抽取命運卡
+              {tUI('🎲 抽取命運卡')}
             </button>
           </div>
         </div>

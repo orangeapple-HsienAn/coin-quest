@@ -4,6 +4,7 @@ import { CheckInButton } from '../components/CheckInButton'
 import { CourseEntryButton } from '../components/CourseEntryButton'
 import { AssetOverview } from '../components/AssetOverview'
 import { useUser } from '@/hooks/useUser'
+import { tUI } from '@/lib/uiStrings'
 
 /**
  * 首頁
@@ -19,21 +20,21 @@ export function HomePage() {
   const dailyTasks = [
     {
       id: 'daily_quiz',
-      name: '每日測驗',
+      name: tUI('每日測驗'),
       reward: 200,
       completed: user?.dailyTaskStatus?.dailyQuizCompleted ?? false,
       linkTo: '/course',
     },
     {
       id: 'variable_task',
-      name: '變動任務',
+      name: tUI('變動任務'),
       reward: 300,
       completed: user?.dailyTaskStatus?.variableTaskCompleted ?? false,
       linkTo: '/stock',
     },
     {
       id: 'course',
-      name: '完成一個課程',
+      name: tUI('完成一個課程'),
       reward: 3000,
       completed: user?.dailyTaskStatus?.courseCompleted ?? false,
       linkTo: '/course',
@@ -43,7 +44,7 @@ export function HomePage() {
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <div className="text-lg text-text-secondary">載入中...</div>
+        <div className="text-lg text-text-secondary">{tUI('載入中...')}</div>
       </div>
     )
   }
@@ -53,7 +54,7 @@ export function HomePage() {
       <Header
         experience={user?.experience ?? 0}
         coins={user?.coins ?? 0}
-        displayName={user?.displayName ?? '叩叮'}
+        displayName={user?.displayName ?? tUI('叩叮')}
       />
 
       <main className="mx-auto max-w-[1200px] px-6 py-8">

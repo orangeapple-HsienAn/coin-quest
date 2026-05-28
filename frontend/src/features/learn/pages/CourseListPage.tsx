@@ -6,6 +6,7 @@ import { Link } from 'react-router'
 import { Header } from '@/components/layout/Header'
 import { useUser } from '@/hooks/useUser'
 import { useLesson } from '../hooks/useLesson'
+import { tUI } from '@/lib/uiStrings'
 
 interface CourseEntry {
   lessonKey: string
@@ -32,9 +33,9 @@ export function CourseListPage() {
         backTo="/"
       />
       <main className="mx-auto max-w-[1200px] px-6 py-10">
-        <h1 className="mb-8 text-2xl font-bold">課程主題</h1>
-        {loading && <p>載入中...</p>}
-        {error && <p className="text-red-500">載入失敗：{error.message}</p>}
+        <h1 className="mb-8 text-2xl font-bold">{tUI('課程主題')}</h1>
+        {loading && <p>{tUI('載入中...')}</p>}
+        {error && <p className="text-red-500">{tUI('載入失敗：')}{error.message}</p>}
         {!loading && !error && (
           <div className="grid grid-cols-3 gap-6 sm:grid-cols-4">
             {COURSE_ENTRIES.map((c) => (

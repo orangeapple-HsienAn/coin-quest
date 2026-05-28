@@ -4,6 +4,7 @@ import type { PieLabelRenderProps } from 'recharts'
 import { Coins, TrendingUp, PiggyBank, ShieldCheck } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { formatCoin } from '@/lib/utils'
+import { tUI } from '@/lib/uiStrings'
 
 interface AssetOverviewProps {
   totalAssets: number
@@ -28,9 +29,9 @@ export function AssetOverview({
 }: AssetOverviewProps) {
   // 半圓形圓餅圖資料（只包含數值大於 0 的項目）
   const allChartData = [
-    { name: '可用現金', value: cash, color: '#1BC49F' },
-    { name: '投資理財', value: investment, color: '#FFBD4A' },
-    { name: '銀行儲蓄', value: savings, color: '#FF7E6B' },
+    { name: tUI('可用現金'), value: cash, color: '#1BC49F' },
+    { name: tUI('投資理財'), value: investment, color: '#FFBD4A' },
+    { name: tUI('銀行儲蓄'), value: savings, color: '#FF7E6B' },
   ]
   const chartData = allChartData.filter((item) => item.value > 0)
 
@@ -85,7 +86,7 @@ export function AssetOverview({
         <div className="flex-[2] rounded-[24px] bg-[#FCD667] p-5 relative shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-transform hover:scale-[1.02] cursor-pointer">
           <div className="flex flex-col h-full justify-between">
             <span className="text-[#8B5E00] font-bold text-sm bg-white/30 px-3 py-1 rounded-full w-max backdrop-blur-sm">
-              資產總額
+              {tUI('資產總額')}
             </span>
             <div className="mt-4">
               <span className="text-3xl font-extrabold text-text-primary tracking-tight block">
@@ -100,7 +101,7 @@ export function AssetOverview({
           to="/ranking"
           className="flex-[1] rounded-[24px] bg-[#FFAD60] p-4 flex flex-col items-center justify-center text-center shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-transform hover:scale-[1.02]"
         >
-          <span className="text-white text-sm font-bold opacity-90 mb-1">排名</span>
+          <span className="text-white text-sm font-bold opacity-90 mb-1">{tUI('排名')}</span>
           <span className="text-4xl font-black text-white drop-shadow-sm">{rank}</span>
         </Link>
       </div>
@@ -139,30 +140,30 @@ export function AssetOverview({
           <AssetLink
             to="/cash"
             icon={Coins}
-            label="可用現金"
+            label={tUI('可用現金')}
             value={cash}
             color="#1BC49F"
           />
           <AssetLink
             to="/stock"
             icon={TrendingUp}
-            label="投資理財"
+            label={tUI('投資理財')}
             value={investment}
             color="#FFBD4A"
           />
           <AssetLink
             to="/savings"
             icon={PiggyBank}
-            label="銀行儲蓄"
+            label={tUI('銀行儲蓄')}
             value={savings}
             color="#FF7E6B"
           />
           <AssetLink
             to="/insurance"
             icon={ShieldCheck}
-            label="持有保險"
+            label={tUI('持有保險')}
             value={insuranceCount}
-            unit="張"
+            unit={tUI('張')}
             color="#9CA3AF"
           />
         </div>

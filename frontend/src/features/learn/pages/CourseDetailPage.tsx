@@ -7,14 +7,17 @@ import { Header } from '@/components/layout/Header'
 import { useUser } from '@/hooks/useUser'
 import { useLesson } from '../hooks/useLesson'
 import { buildChapters } from '../hooks/useChapters'
+import { useCourseProgress } from '../hooks/useCourseProgress'
 import { SerpentinePath } from '../components/SerpentinePath'
+import { tUI } from '@/lib/uiStrings'
 
 export function CourseDetailPage() {
   const { courseId } = useParams<{ courseId: string }>()
   const { data: user } = useUser()
   const { data, loading, error } = useLesson(courseId ?? '')
+  const { data: completedSet } = useCourseProgress(courseId ?? '')
 
-  const chapters = data ? buildChapters(data.units, data.language) : []
+  const chapters = data ? buildChapters(data.units, data.language, completedSet) : []
 
   return (
     <div className="min-h-screen bg-background">
@@ -24,8 +27,8 @@ export function CourseDetailPage() {
         backTo="/course"
       />
       <main className="mx-auto max-w-[1200px] px-6 py-10">
-        {loading && <p>載入中...</p>}
-        {error && <p className="text-red-500">載入失敗：{error.message}</p>}
+        {loading && <p>{tUI('載入中...')}</p>}
+        {error && <p className="text-red-500">{tUI('載入失敗：')}{error.message}</p>}
         {data && (
           <>
             <h1 className="mb-8 text-center text-2xl font-bold">{data.info.topic}</h1>

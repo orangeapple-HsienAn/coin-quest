@@ -1,5 +1,6 @@
 import { formatCoin } from '@/lib/utils'
 import { CoinIcon } from '@/components/icons/CoinIcon'
+import { tUI } from '@/lib/uiStrings'
 
 interface FateCardModalProps {
   isOpen: boolean
@@ -45,7 +46,7 @@ export function FateCardModal({
         {/* 標題 */}
         <div className="mb-4 flex items-center gap-2">
           <span className="text-2xl">🎲</span>
-          <h2 className="text-xl font-bold text-text-primary">命運一抽</h2>
+          <h2 className="text-xl font-bold text-text-primary">{tUI('命運一抽')}</h2>
         </div>
 
         {/* 金額顯示：依類型不同 */}
@@ -65,7 +66,7 @@ export function FateCardModal({
         )}
         {type === 'neutral' && (
           <div className="mb-4 rounded-[12px] bg-gray-100 px-4 py-3 text-center">
-            <span className="text-lg font-bold text-text-secondary">平安無事</span>
+            <span className="text-lg font-bold text-text-secondary">{tUI('平安無事')}</span>
           </div>
         )}
 
@@ -87,7 +88,7 @@ export function FateCardModal({
                 disabled={isProcessing}
                 className="flex flex-1 items-center justify-center gap-1 rounded-[8px] bg-coral py-3 font-medium text-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] disabled:opacity-50"
               >
-                {isProcessing ? '處理中...' : <><CoinIcon size={16} /> 支付金幣</>}
+                {isProcessing ? tUI('處理中...') : <><CoinIcon size={16} /> {tUI('支付金幣')}</>}
               </button>
 
               {hasInsurance && (
@@ -96,14 +97,14 @@ export function FateCardModal({
                   disabled={isProcessing}
                   className="flex-1 rounded-[8px] bg-teal py-3 font-medium text-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] disabled:opacity-50"
                 >
-                  {isProcessing ? '處理中...' : '🛡️ 我有保險'}
+                  {isProcessing ? tUI('處理中...') : tUI('🛡️ 我有保險')}
                 </button>
               )}
             </div>
 
             {hasInsurance && (
               <p className="mt-3 flex items-center justify-center gap-1 text-xs text-text-tertiary">
-                使用保險可獲得 <CoinIcon size={12} /> {formatCoin(claimAmount)} 理賠金
+                {tUI('使用保險可獲得')} <CoinIcon size={12} /> {formatCoin(claimAmount)} {tUI('理賠金')}
               </p>
             )}
           </>
@@ -112,7 +113,7 @@ export function FateCardModal({
             onClick={onConfirm}
             className="w-full rounded-[8px] bg-teal py-3 font-medium text-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
           >
-            確認
+            {tUI('確認')}
           </button>
         )}
       </div>
@@ -142,7 +143,7 @@ export function InsuranceClaimModal({
         {/* 標題 */}
         <div className="mb-4 flex items-center justify-center gap-2">
           <span className="text-2xl">🛡️</span>
-          <h2 className="text-xl font-bold text-text-primary">保險理賠</h2>
+          <h2 className="text-xl font-bold text-text-primary">{tUI('保險理賠')}</h2>
         </div>
 
         {/* 理賠金額 */}
@@ -158,7 +159,7 @@ export function InsuranceClaimModal({
         </div>
 
         <p className="mb-6 text-center text-sm text-text-secondary">
-          還好有保險！保險公司幫你支付了這筆費用，守住了你的錢包！
+          {tUI('還好有保險！保險公司幫你支付了這筆費用，守住了你的錢包！')}
         </p>
 
         {/* 確認按鈕 */}

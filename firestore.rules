@@ -55,5 +55,32 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow write: if isAdmin();
     }
+
+    // CMS sync 鏡像資料：登入使用者可讀，僅 Admin SDK / admin 帳號可寫
+    match /stages/{stageId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+      match /lessons/{lessonId} {
+        allow read: if request.auth != null;
+        allow write: if isAdmin();
+        match /units/{unitId} {
+          allow read: if request.auth != null;
+          allow write: if isAdmin();
+          match /{subColl}/{subDocId} {
+            allow read: if request.auth != null;
+            allow write: if isAdmin();
+          }
+        }
+      }
+    }
+
+    match /shared/{kind} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+      match /items/{itemId} {
+        allow read: if request.auth != null;
+        allow write: if isAdmin();
+      }
+    }
   }
 }

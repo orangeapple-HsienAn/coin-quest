@@ -1,5 +1,6 @@
 import { formatCoin } from '@/lib/utils'
 import { CoinIcon } from '@/components/icons/CoinIcon'
+import { tUI } from '@/lib/uiStrings'
 
 interface LevelProgressProps {
   currentLevel: number
@@ -33,12 +34,12 @@ export function LevelProgress({
         {/* 當前等級 */}
         <div className="text-center">
           <span className="inline-block rounded-full bg-level-current px-3 py-1 text-xs font-medium text-white">
-            目前等級：{currentLevel}
+            {tUI('目前等級：')}{currentLevel}
           </span>
           <div className="mt-2">
             <p className="text-sm font-medium text-text-primary">🎖️ {currentLevelName}</p>
             <p className="flex items-center justify-center gap-1 text-xs text-text-secondary">
-              <CoinIcon size={12} /> 日薪 {formatCoin(currentSalary)}
+              <CoinIcon size={12} /> {tUI('日薪')} {formatCoin(currentSalary)}
             </p>
           </div>
         </div>
@@ -54,7 +55,7 @@ export function LevelProgress({
               className="flex h-full items-center justify-end rounded-full bg-exp-bar-fill pr-2 transition-all duration-300"
               style={{ width: `${progress}%` }}
             >
-              {progress > 10 && <span className="text-xs text-white">⚡ 經驗</span>}
+              {progress > 10 && <span className="text-xs text-white">⚡ {tUI('經驗')}</span>}
             </div>
           </div>
         </div>
@@ -62,12 +63,12 @@ export function LevelProgress({
         {/* 下一等級 */}
         <div className="text-center">
           <span className="inline-block rounded-full bg-level-next px-3 py-1 text-xs font-medium text-white">
-            下一等級：{nextLevel}
+            {tUI('下一等級：')}{nextLevel}
           </span>
           <div className="mt-2">
             <p className="text-sm font-medium text-text-primary">🎖️ {nextLevelName}</p>
             <p className="flex items-center justify-center gap-1 text-xs text-text-secondary">
-              <CoinIcon size={12} /> 日薪 {formatCoin(nextSalary)}
+              <CoinIcon size={12} /> {tUI('日薪')} {formatCoin(nextSalary)}
             </p>
           </div>
         </div>

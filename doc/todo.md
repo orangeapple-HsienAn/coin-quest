@@ -1,8 +1,26 @@
 TODO:
 [] 確認首頁的排名機制會不會造成大量的 query
 [] Feat: 與另一個系統實作 Single Sign-On (SSO)，取代目前的匿名登入機制
+[] Feat: 把 CMS snapshot 同步機制做成正式版（寫 coin-quest Firestore + Storage、Admin 觸發按鈕、增量同步用 sourceVersion hash），目前 dev 走本機 data/cms-snapshot/ 是過渡作法
+[] Feat: 加入「小議題 / 議題測驗」章節類型（CMS 已有 topic/topicQuiz components，unit-1-2 / unit-1-4 受影響）
+[] Feat: 章節列表顯示完成狀態（讀 users/{uid}/courseProgress 把已完成卡片變綠）
+[] Feat: 章節列表加入「懸浮導引對話框」（吉祥物 + 指向下一個未完成單元，需求書 5.2）
+[] Feat: 課程主題列表加入「解鎖機制」（已解鎖彩色 / 待解鎖灰+鎖頭，需求書 5.1）
+[] Feat: 批次同步 stage-1 全部 15 lessons 到 coin-quest（目前只有 lesson-1）
+[] Improve: S 型路徑虛線連接器精準對齊（步驟 2 留下的微調）
+[] Improve: 前端 bundle 1.4MB 太大，用 React.lazy 拆 Remotion / 章節頁
+[] Chore: 復原 frontend/src/lib/firebase.ts 的 Emulator 連線（裝 Java + 建 emulator-data 後切回 USE_EMULATOR = true）
+[] Chore: 等 CMS 端補 publishedGames.scoreThresholds 欄位後，移除前端寫死的預設門檻
+[] Improve: 把 KnowledgeResultCard / StoryResultCard / QuizResultCard / Header 品牌字 / CourseListPage 標題 也接入 i18n（目前日文版 demo 這些仍是中文）
+[] Improve: 用 i18n 框架（react-i18next）取代手寫 t() / *_JA 對照表
+[] Chore: 等 CMS 端補 publishedGames 多語 snapshot 後，移除前端 gameTranslations.ts 的 zh→ja 對照
+[] Improve: UNIT_NAME_JA 目前只 hardcode lesson-1 4 個 unit，之後 sync 時改成從 CMS 翻譯資料動態取
 
 DONE:
+[x] Feat: 加入第一課日文版（demo 用）— /course/stage-1-lesson-1-ja
+	=> 用 lessonKey suffix (-ja) 編碼語言，影片配音、章節列表 pill、單元名稱、quiz 題目、story 選項、game HTML META、game 結算卡都已日文化；採手寫 zh→ja 對照表（gameTranslations.ts）作為過渡，未來換 i18n 框架取代 (ed71d3e)
+[x] Feat: 全新課程容器（learn 模組）— S 型章節列表 + 4 種章節 view + Remotion Player 整合
+	=> 砍掉舊 course 模組，依需求書 5.1~5.6 全新實作；含 CMS lesson snapshot 腳本（讀 oafq-cms-1313）、vite dev 中介層、自動 2x2/1x4 quiz 排版、雙保險遊戲完成判定、小故事 A/B/C 三選項；dev 模式暫時直連 production Firebase (cb10897, ab43ff0, 430ad39, e09637b, 7cbcd1e)
 [x] Fix: 影片中 Emoji 不斷晃動（sub-pixel jitter）
 	=> 移除 ConceptScene 的 iconPulse 和 StoryScene 的 iconWobble 持續動畫，更新 Skills 文件加入 Emoji 動畫禁忌說明，重新渲染 Lesson 2 全部影片 (2257144)
 [x] Improve: 依照國際化 skill 修改 knowledge-s1-L02-3 的 lesson plan 及影片

@@ -4,6 +4,7 @@ import { db } from '@/lib/firebase'
 import { useUser } from '@/hooks/useUser'
 import { Header } from '@/components/layout/Header'
 import { formatCoin } from '@/lib/utils'
+import { tUI } from '@/lib/uiStrings'
 import type { User } from '@/types'
 
 /**
@@ -52,14 +53,14 @@ export function RankingPage() {
       <Header
         experience={user?.experience ?? 0}
         coins={user?.coins ?? 0}
-        displayName={user?.displayName ?? '叩叮'}
+        displayName={user?.displayName ?? tUI('叩叮')}
         backTo="/"
       />
 
       <main className="mx-auto max-w-[800px] px-6 py-8">
         {/* 標題 */}
         <h1 className="mb-6 text-center text-xl font-bold text-primary">
-          🏆 {levelName ?? `Lv.${userLevel}`} 排行榜 🏆
+          🏆 {levelName ?? `Lv.${userLevel}`} {tUI('排行榜')} 🏆
         </h1>
 
         {/* 前三名：凸字型頒獎台 */}
@@ -124,13 +125,13 @@ export function RankingPage() {
                 <span className="font-mono-number text-2xl font-bold text-teal">
                   #{myRanking.rank}
                 </span>
-                <span className="font-medium text-text-primary">我的排名</span>
+                <span className="font-medium text-text-primary">{tUI('我的排名')}</span>
               </div>
               <div className="text-right">
                 <p className="font-mono-number text-lg font-bold text-text-primary">
                   ${formatCoin(myRanking.totalAssets)}
                 </p>
-                <p className="text-xs text-text-tertiary">總資產</p>
+                <p className="text-xs text-text-tertiary">{tUI('總資產')}</p>
               </div>
             </div>
           </div>
@@ -140,40 +141,40 @@ export function RankingPage() {
         <div className="overflow-hidden rounded-[16px] border border-[#F0E6D8] bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
           {/* 表頭（圖示 + Tooltip） */}
           <div className="grid grid-cols-7 bg-primary px-4 py-3 text-sm font-medium text-white">
-            <div>排名</div>
-            <div className="col-span-2">玩家</div>
-            <div className="group relative text-right" title="可用現金">
+            <div>{tUI('排名')}</div>
+            <div className="col-span-2">{tUI('玩家')}</div>
+            <div className="group relative text-right" title={tUI('可用現金')}>
               <span className="cursor-default">💰</span>
               <div className="pointer-events-none absolute right-0 top-full z-10 mt-1 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                可用現金
+                {tUI('可用現金')}
               </div>
             </div>
-            <div className="group relative text-right" title="投資理財">
+            <div className="group relative text-right" title={tUI('投資理財')}>
               <span className="cursor-default">📈</span>
               <div className="pointer-events-none absolute right-0 top-full z-10 mt-1 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                投資理財
+                {tUI('投資理財')}
               </div>
             </div>
-            <div className="group relative text-right" title="銀行儲蓄">
+            <div className="group relative text-right" title={tUI('銀行儲蓄')}>
               <span className="cursor-default">🐷</span>
               <div className="pointer-events-none absolute right-0 top-full z-10 mt-1 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                銀行儲蓄
+                {tUI('銀行儲蓄')}
               </div>
             </div>
-            <div className="group relative text-right" title="資產總額">
+            <div className="group relative text-right" title={tUI('資產總額')}>
               <span className="cursor-default">💼</span>
               <div className="pointer-events-none absolute right-0 top-full z-10 mt-1 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                資產總額
+                {tUI('資產總額')}
               </div>
             </div>
           </div>
 
           {/* 列表內容 */}
           {isLoading ? (
-            <div className="px-4 py-8 text-center text-text-secondary">載入中...</div>
+            <div className="px-4 py-8 text-center text-text-secondary">{tUI('載入中...')}</div>
           ) : rankings.length === 0 ? (
             <div className="px-4 py-8 text-center text-text-secondary">
-              尚無排名資料
+              {tUI('尚無排名資料')}
             </div>
           ) : (
             <div className="divide-y divide-[#F0E6D8]">
@@ -205,7 +206,7 @@ export function RankingPage() {
                         }`}
                       >
                         {player.displayName}
-                        {isMe && ' (我)'}
+                        {isMe && ` ${tUI('(我)')}`}
                       </span>
                     </div>
                     <div className="text-right font-mono-number text-text-secondary">

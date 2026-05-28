@@ -12,6 +12,7 @@ import { useUser } from '@/hooks/useUser'
 import { Header } from '@/components/layout/Header'
 import { CoinIcon } from '@/components/icons/CoinIcon'
 import { formatCoin } from '@/lib/utils'
+import { tUI } from '@/lib/uiStrings'
 import type { Stock, StockHolding, StockTransaction, CurrentStockPrices } from '@/types'
 
 type TabType = 'buy' | 'unrealized' | 'realized'
@@ -176,7 +177,7 @@ export function StockPage() {
       <Header
         experience={user?.experience ?? 0}
         coins={user?.coins ?? 0}
-        displayName={user?.displayName ?? '叩叮'}
+        displayName={user?.displayName ?? tUI('叩叮')}
         backTo="/"
       />
 
@@ -186,7 +187,7 @@ export function StockPage() {
           <div className="grid grid-cols-5 gap-3">
             {/* 股票總資產 */}
             <div className="p-2">
-              <p className="text-xs text-text-tertiary">股票總資產</p>
+              <p className="text-xs text-text-tertiary">{tUI('股票總資產')}</p>
               <p className="font-mono-number text-lg font-bold text-text-primary">
                 ${formatCoin(user?.totalStockValue ?? 0)}
               </p>
@@ -199,7 +200,7 @@ export function StockPage() {
                 activeTab === 'realized' ? 'border-b-3 border-teal' : ''
               }`}
             >
-              <p className="text-xs text-text-tertiary">已實現損益</p>
+              <p className="text-xs text-text-tertiary">{tUI('已實現損益')}</p>
               <p className={`font-mono-number text-lg font-bold ${pnlColor(user?.realizedPnL || 0)}`}>
                 {pnlSign(user?.realizedPnL || 0)}{formatCoin(user?.realizedPnL || 0)}
               </p>
@@ -212,7 +213,7 @@ export function StockPage() {
                 activeTab === 'unrealized' ? 'border-b-3 border-teal' : ''
               }`}
             >
-              <p className="text-xs text-text-tertiary">未實現損益</p>
+              <p className="text-xs text-text-tertiary">{tUI('未實現損益')}</p>
               <p className={`font-mono-number text-lg font-bold ${pnlColor(unrealizedPnL)}`}>
                 {pnlSign(unrealizedPnL)}{formatCoin(unrealizedPnL)}
               </p>
@@ -220,7 +221,7 @@ export function StockPage() {
 
             {/* 總損益 */}
             <div className="p-2">
-              <p className="text-xs text-text-tertiary">總損益</p>
+              <p className="text-xs text-text-tertiary">{tUI('總損益')}</p>
               <p className={`font-mono-number text-lg font-bold ${pnlColor(totalPnL)}`}>
                 {pnlSign(totalPnL)}{formatCoin(totalPnL)}
               </p>
@@ -228,7 +229,7 @@ export function StockPage() {
 
             {/* 可用現金 */}
             <div className="p-2">
-              <p className="text-xs text-text-tertiary">可用現金</p>
+              <p className="text-xs text-text-tertiary">{tUI('可用現金')}</p>
               <p className="flex items-center gap-1 font-mono-number text-lg font-bold text-text-primary">
                 <CoinIcon size={16} /> {formatCoin(user?.coins ?? 0)}
               </p>
@@ -243,7 +244,7 @@ export function StockPage() {
               onClick={() => setActiveTab('buy')}
               className="rounded-[8px] bg-invest-orange px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-invest-orange/90"
             >
-              買賣股票 →
+              {tUI('買賣股票 →')}
             </button>
           </div>
         )}
@@ -255,14 +256,14 @@ export function StockPage() {
             <div className="lg:col-span-3">
               <div className="overflow-hidden rounded-[16px] border border-[#F0E6D8] bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                 <div className="grid grid-cols-5 bg-invest-orange px-4 py-3 text-sm font-medium text-white">
-                  <div className="col-span-2">商品名稱</div>
-                  <div className="text-right">成交價</div>
-                  <div className="text-right">漲跌</div>
-                  <div className="text-right">幅度</div>
+                  <div className="col-span-2">{tUI('商品名稱')}</div>
+                  <div className="text-right">{tUI('成交價')}</div>
+                  <div className="text-right">{tUI('漲跌')}</div>
+                  <div className="text-right">{tUI('幅度')}</div>
                 </div>
 
                 {tradeableStocks.length === 0 ? (
-                  <div className="px-4 py-8 text-center text-text-secondary">尚無股票資料</div>
+                  <div className="px-4 py-8 text-center text-text-secondary">{tUI('尚無股票資料')}</div>
                 ) : (
                   <div className="max-h-[600px] divide-y divide-[#F0E6D8] overflow-y-auto">
                     {tradeableStocks.map((stock) => {
@@ -283,7 +284,7 @@ export function StockPage() {
                               {stock.name}
                               {holding && (
                                 <span className="ml-2 text-xs text-invest-orange">
-                                  持有 {holding.quantity} 股
+                                  {tUI('持有')} {holding.quantity} {tUI('股')}
                                 </span>
                               )}
                             </p>
@@ -329,7 +330,7 @@ export function StockPage() {
                   {/* 走勢圖 */}
                   {priceHistory.length > 0 ? (
                     <div className="rounded-[12px] bg-gray-50 p-3">
-                      <p className="mb-2 text-xs text-text-tertiary">近期走勢</p>
+                      <p className="mb-2 text-xs text-text-tertiary">{tUI('近期走勢')}</p>
                       <ResponsiveContainer width="100%" height={120}>
                         <LineChart data={priceHistory}>
                           <XAxis dataKey="date" tick={{ fontSize: 10 }} />
@@ -341,7 +342,7 @@ export function StockPage() {
                     </div>
                   ) : (
                     <div className="rounded-[12px] bg-gray-50 p-4 text-center text-xs text-text-tertiary">
-                      暫無走勢資料
+                      {tUI('暫無走勢資料')}
                     </div>
                   )}
 
@@ -349,15 +350,15 @@ export function StockPage() {
                   {selectedHolding && (
                     <div className="space-y-2 rounded-[12px] bg-gray-50 p-4">
                       <div className="flex justify-between text-sm">
-                        <span className="text-text-secondary">持有數量</span>
-                        <span className="font-mono-number">{selectedHolding.quantity} 股</span>
+                        <span className="text-text-secondary">{tUI('持有數量')}</span>
+                        <span className="font-mono-number">{selectedHolding.quantity} {tUI('股')}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-text-secondary">平均成本</span>
+                        <span className="text-text-secondary">{tUI('平均成本')}</span>
                         <span className="font-mono-number">${formatCoin(selectedHolding.averageCost)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-text-secondary">未實現損益</span>
+                        <span className="text-text-secondary">{tUI('未實現損益')}</span>
                         {(() => {
                           const pnl = (selectedStock.currentPrice - selectedHolding.averageCost) * selectedHolding.quantity
                           return <span className={`font-mono-number font-medium ${pnlColor(pnl)}`}>{pnlSign(pnl)}{formatCoin(pnl)}</span>
@@ -369,26 +370,26 @@ export function StockPage() {
                   {/* 非交易時段提示 */}
                   {!canTrade && (
                     <div className="rounded-[8px] bg-amber-50 border border-amber-200 px-4 py-3 text-center text-sm text-amber-700">
-                      目前非交易時段，交易時間為 16:00-21:00
+                      {tUI('目前非交易時段，交易時間為 16:00-21:00')}
                     </div>
                   )}
 
                   {/* 交易操作區 */}
                   <div className={!canTrade ? 'pointer-events-none opacity-50' : ''}>
                     <div className="mb-2 flex items-center justify-between">
-                      <label className="text-sm text-text-secondary">交易數量</label>
+                      <label className="text-sm text-text-secondary">{tUI('交易數量')}</label>
                       {/* 股/張切換 */}
                       <div className="flex overflow-hidden rounded-[8px] border border-gray-300 text-xs">
                         <button
                           onClick={() => { setUnit('share'); setQuantity(100) }}
                           disabled={!canTrade}
                           className={`px-3 py-1 ${unit === 'share' ? 'bg-invest-orange text-white' : 'text-text-secondary'}`}
-                        >股</button>
+                        >{tUI('股')}</button>
                         <button
                           onClick={() => { setUnit('lot'); setQuantity(1) }}
                           disabled={!canTrade}
                           className={`px-3 py-1 ${unit === 'lot' ? 'bg-invest-orange text-white' : 'text-text-secondary'}`}
-                        >張</button>
+                        >{tUI('張')}</button>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -411,20 +412,20 @@ export function StockPage() {
                       >+</button>
                     </div>
                     <p className="mt-2 text-xs text-text-tertiary">
-                      {unit === 'lot' && `${quantity} 張 = ${actualShares} 股 · `}
-                      預估金額：${formatCoin(selectedStock.currentPrice * actualShares)}
+                      {unit === 'lot' && `${quantity} ${tUI('張')} = ${actualShares} ${tUI('股')} · `}
+                      {tUI('預估金額：')}${formatCoin(selectedStock.currentPrice * actualShares)}
                     </p>
                   </div>
 
                   {/* 現金不足 / 持股不足提示 */}
                   {canTrade && insufficientCash && quantity > 0 && (
                     <p className="text-center text-sm text-loss-red">
-                      現金不足！需要 ${formatCoin(selectedStock.currentPrice * actualShares)}，目前僅有 ${formatCoin(user?.coins ?? 0)}
+                      {tUI('現金不足！需要')}${formatCoin(selectedStock.currentPrice * actualShares)}{tUI('，目前僅有')}${formatCoin(user?.coins ?? 0)}
                     </p>
                   )}
                   {canTrade && insufficientStock && quantity > 0 && maxSellShares > 0 && (
                     <p className="text-center text-sm text-gain-green">
-                      持股不足！目前僅持有 {maxSellShares} 股
+                      {tUI('持股不足！目前僅持有')}{maxSellShares} {tUI('股')}
                     </p>
                   )}
 
@@ -435,20 +436,20 @@ export function StockPage() {
                       disabled={!canTrade || buyMutation.isPending || insufficientCash || actualShares <= 0}
                       className="flex-1 rounded-[8px] bg-loss-red py-3 font-medium text-white disabled:opacity-50"
                     >
-                      {buyMutation.isPending ? '處理中...' : '買進'}
+                      {buyMutation.isPending ? tUI('處理中...') : tUI('買進')}
                     </button>
                     <button
                       onClick={() => sellMutation.mutate({ stockId: selectedStock.id, qty: actualShares })}
                       disabled={!canTrade || sellMutation.isPending || insufficientStock || actualShares <= 0}
                       className="flex-1 rounded-[8px] bg-gain-green py-3 font-medium text-white disabled:opacity-50"
                     >
-                      {sellMutation.isPending ? '處理中...' : '賣出'}
+                      {sellMutation.isPending ? tUI('處理中...') : tUI('賣出')}
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="flex h-64 items-center justify-center rounded-[16px] border border-[#F0E6D8] bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                  <p className="text-text-tertiary">← 請選擇股票</p>
+                  <p className="text-text-tertiary">{tUI('← 請選擇股票')}</p>
                 </div>
               )}
             </div>
@@ -462,19 +463,19 @@ export function StockPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-invest-orange text-white">
-                    <th className="px-4 py-3 text-left font-medium">股票名稱</th>
-                    <th className="px-4 py-3 text-right font-medium">庫存股數</th>
-                    <th className="px-4 py-3 text-right font-medium">平均成本</th>
-                    <th className="px-4 py-3 text-right font-medium">現在價格</th>
-                    <th className="px-4 py-3 text-right font-medium">參考市值</th>
-                    <th className="px-4 py-3 text-right font-medium">未實現損益</th>
-                    <th className="px-4 py-3 text-right font-medium">報酬率</th>
+                    <th className="px-4 py-3 text-left font-medium">{tUI('股票名稱')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('庫存股數')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('平均成本')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('現在價格')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('參考市值')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('未實現損益')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('報酬率')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#F0E6D8]">
                   {holdings.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="px-4 py-8 text-center text-text-secondary">尚無持倉</td>
+                      <td colSpan={7} className="px-4 py-8 text-center text-text-secondary">{tUI('尚無持倉')}</td>
                     </tr>
                   ) : (
                     holdings.map((holding) => {
@@ -519,19 +520,19 @@ export function StockPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-invest-orange text-white">
-                    <th className="px-4 py-3 text-left font-medium">時間</th>
-                    <th className="px-4 py-3 text-left font-medium">股票名稱</th>
-                    <th className="px-4 py-3 text-right font-medium">交易股數</th>
-                    <th className="px-4 py-3 text-right font-medium">買入單價</th>
-                    <th className="px-4 py-3 text-right font-medium">賣出單價</th>
-                    <th className="px-4 py-3 text-right font-medium">損益金額</th>
-                    <th className="px-4 py-3 text-right font-medium">報酬率</th>
+                    <th className="px-4 py-3 text-left font-medium">{tUI('時間')}</th>
+                    <th className="px-4 py-3 text-left font-medium">{tUI('股票名稱')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('交易股數')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('買入單價')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('賣出單價')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('損益金額')}</th>
+                    <th className="px-4 py-3 text-right font-medium">{tUI('報酬率')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#F0E6D8]">
                   {sellTransactions.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="px-4 py-8 text-center text-text-secondary">尚無已實現損益紀錄</td>
+                      <td colSpan={7} className="px-4 py-8 text-center text-text-secondary">{tUI('尚無已實現損益紀錄')}</td>
                     </tr>
                   ) : (
                     sellTransactions.map((tx) => {

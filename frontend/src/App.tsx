@@ -17,6 +17,7 @@ import { ChapterPage } from '@/features/learn/pages/ChapterPage'
 import { AdminDashboardPage } from '@/features/admin/pages/AdminDashboardPage'
 import { AdminCollectionPage } from '@/features/admin/pages/AdminCollectionPage'
 import { AdminChaptersPage } from '@/features/admin/pages/AdminChaptersPage'
+import { tUI } from '@/lib/uiStrings'
 
 // 建立 QueryClient 實例
 const queryClient = new QueryClient({
@@ -35,7 +36,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-bg-cream">
-        <div className="text-lg text-text-secondary">載入中...</div>
+        <div className="text-lg text-text-secondary">{tUI('載入中...')}</div>
       </div>
     )
   }
@@ -55,7 +56,7 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   if (loading || userLoading) {
     return (
       <div className="flex h-screen items-center justify-center bg-bg-cream">
-        <div className="text-lg text-text-secondary">載入中...</div>
+        <div className="text-lg text-text-secondary">{tUI('載入中...')}</div>
       </div>
     )
   }
@@ -74,7 +75,7 @@ function GuestRoute({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-bg-cream">
-        <div className="text-lg text-text-secondary">載入中...</div>
+        <div className="text-lg text-text-secondary">{tUI('載入中...')}</div>
       </div>
     )
   }

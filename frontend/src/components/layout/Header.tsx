@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { signOut } from '@/lib/auth'
 import { formatCoin } from '@/lib/utils'
 import { CoinIcon } from '@/components/icons/CoinIcon'
+import { tUI } from '@/lib/uiStrings'
 
 interface HeaderProps {
   experience?: number
@@ -16,7 +17,7 @@ interface HeaderProps {
  * 頁面頂部 Header（統一資訊列）
  * 包含 返回按鈕/Logo、經驗值、金幣數量、個人頭像
  */
-export function Header({ experience = 0, coins = 0, displayName = '叩叮', backTo }: HeaderProps) {
+export function Header({ experience = 0, coins = 0, displayName = tUI('叩叮'), backTo }: HeaderProps) {
   const { user } = useAuth()
 
   const handleSignOut = async () => {
@@ -30,11 +31,11 @@ export function Header({ experience = 0, coins = 0, displayName = '叩叮', back
         {backTo ? (
           <Link to={backTo} className="flex items-center gap-2 text-white hover:text-white/80">
             <span className="text-lg">←</span>
-            <span className="text-sm font-medium">返回</span>
+            <span className="text-sm font-medium">{tUI('返回')}</span>
           </Link>
         ) : (
           <Link to="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-white">橘子蘋果</span>
+            <span className="text-xl font-bold text-white">{tUI('橘子蘋果')}</span>
           </Link>
         )}
 
@@ -68,7 +69,7 @@ export function Header({ experience = 0, coins = 0, displayName = '叩叮', back
               onClick={handleSignOut}
               className="ml-2 text-xs text-white/70 hover:text-white"
             >
-              登出
+              {tUI('登出')}
             </button>
           </div>
         </div>

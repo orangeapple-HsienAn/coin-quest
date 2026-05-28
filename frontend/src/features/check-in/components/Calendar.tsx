@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 import { CoinIcon } from '@/components/icons/CoinIcon'
+import { tUI } from '@/lib/uiStrings'
+import { FORCED_LANGUAGE } from '@/lib/forcedLanguage'
 
 interface CalendarProps {
   year: number
@@ -11,7 +13,9 @@ interface CalendarProps {
   isCheckingIn: boolean
 }
 
-const WEEKDAYS = ['一', '二', '三', '四', '五', '六', '日']
+const WEEKDAYS_ZH = ['一', '二', '三', '四', '五', '六', '日']
+const WEEKDAYS_JA = ['月', '火', '水', '木', '金', '土', '日']
+const WEEKDAYS = FORCED_LANGUAGE === 'ja' ? WEEKDAYS_JA : WEEKDAYS_ZH
 
 /**
  * 簽到日曆元件
@@ -73,7 +77,7 @@ export function Calendar({
     <div className="rounded-[16px] border border-[#F0E6D8] bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
       {/* 月份標題 */}
       <h3 className="mb-3 text-center text-lg font-bold text-text-primary">
-        {year} 年 {month} 月
+        {FORCED_LANGUAGE === 'ja' ? `${year}年 ${month}月` : `${year} 年 ${month} 月`}
       </h3>
 
       {/* 星期標題 */}
@@ -120,7 +124,7 @@ export function Calendar({
                 disabled={isCheckingIn}
                 className="relative flex h-14 items-center justify-center rounded-[8px] bg-coral text-sm font-bold text-white shadow-[0_2px_8px_rgba(255,107,107,0.4)] transition-transform hover:scale-105 disabled:opacity-50"
               >
-                {isCheckingIn ? '...' : '簽到'}
+                {isCheckingIn ? '...' : tUI('簽到')}
               </button>
             )
           }

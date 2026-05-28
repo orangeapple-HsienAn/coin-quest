@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { formatCoin } from '@/lib/utils'
 import { CoinIcon } from '@/components/icons/CoinIcon'
+import { tUI } from '@/lib/uiStrings'
 
 interface Task {
   id: string
@@ -24,7 +25,7 @@ export function DailyTasks({ tasks }: DailyTasksProps) {
   return (
     <div className="rounded-[16px] border-[3px] border-cream-yellow bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
       <h2 className="mb-4 text-center text-lg font-semibold text-text-primary">
-        今日任務
+        {tUI('今日任務')}
       </h2>
 
       <div className="space-y-3">

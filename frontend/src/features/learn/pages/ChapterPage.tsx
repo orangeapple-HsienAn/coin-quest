@@ -15,6 +15,7 @@ import { StoryView } from '../views/StoryView'
 import { completeChapter } from '../lib/completeChapter'
 import { parseLessonKey } from '../lib/lessonKey'
 import { getChapterTypeLabel, getUnitNameI18n } from '../lib/gameTranslations'
+import { tUI } from '@/lib/uiStrings'
 
 export function ChapterPage() {
   const { courseId, chapterId } = useParams<{ courseId: string; chapterId: string }>()
@@ -45,8 +46,8 @@ export function ChapterPage() {
         backTo={backToCourse}
       />
       <main className="mx-auto max-w-[1200px] px-6 py-8">
-        {loading && <p>載入中...</p>}
-        {error && <p className="text-red-500">載入失敗：{error.message}</p>}
+        {loading && <p>{tUI('載入中...')}</p>}
+        {error && <p className="text-red-500">{tUI('載入失敗：')}{error.message}</p>}
         {content && (
           <>
             <h1 className="mb-6 text-center text-xl font-bold">

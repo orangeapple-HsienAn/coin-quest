@@ -1,24 +1,29 @@
 /**
- * 把 CMS 原始 Storage URL 轉成本機 snapshot 路徑（dev）。
+ * 把 CMS 原始 Storage URL（embedded 在 unit doc 的 croppedImageUrl / audioUrl 等欄位）
+ * 轉成 coin-quest Storage（cms-mirror/...）的 public download URL。
  *
- * snapshot 路徑規則（與 functions/scripts/snapshot-cms-lesson.ts 對齊）：
- *   - units/{unitId}/images/cropped/page_{N}.png → /cms-snapshot/{lessonKey}/units/{unitId}/images/page_{N}.png
- *   - units/{unitId}/voices/{lang}/{section}_{N}.wav → /cms-snapshot/{lessonKey}/units/{unitId}/voices/{lang}_{section}_{N}.wav
- *   - assets/backgrounds/{name} → /cms-snapshot/{lessonKey}/assets/backgrounds/{name}
- *   - assets/characters/{name} → /cms-snapshot/{lessonKey}/assets/characters/{name}
+ * 對應 mirror 路徑（與 functions/scripts/sync-cms-lesson.ts 對齊）：
+ *   units/{u}/images/{cropped|grid}/{file}   → cms-mirror/stages/{s}/lessons/{l}/units/{u}/images/{file}
+ *   units/{u}/voices/{lang}/{section}_{N}.x  → cms-mirror/.../units/{u}/voices/{lang}_{section}_{N}.x
+ *   assets/backgrounds/{file}                → cms-mirror/shared/backgrounds/{file}
+ *   assets/characters/{file}                 → cms-mirror/shared/characters/{file}
  *
- * 注意：lessonKey 透過 setSnapshotLessonKey() 設定（影片開播前由父層呼叫一次）。
- * 之後接 production Storage 時，這個函式只需改成回傳 coin-quest Storage URL。
+ * lessonKey 由父層在切到某 lesson 時透過 setSnapshotLessonKey() 設定。
  */
+import { parseLessonFolder } from '../snapshot'
 
-// 由父層在切到某 lesson 時設定
+const STORAGE_BUCKET = 'oa-coin-quest.firebasestorage.app'
+const STORAGE_BASE = `https://firebasestorage.googleapis.com/v0/b/${STORAGE_BUCKET}/o`
+
 let currentLessonKey: string | null = null
 
 export function setSnapshotLessonKey(key: string | null) {
   currentLessonKey = key
 }
 
+/** 從 Firebase Storage URL 抽出 bucket-relative path */
 function extractStoragePath(url: string): string | null {
+  // Firebase tokenized: /v0/b/{bucket}/o/{ENCODED_PATH}?alt=media&token=...
   const m1 = url.match(/\/o\/([^?]+)/)
   if (m1) {
     try {
@@ -27,6 +32,7 @@ function extractStoragePath(url: string): string | null {
       return null
     }
   }
+  // Plain: https://storage.googleapis.com/{bucket}/{path}
   const m2 = url.match(/^https?:\/\/storage\.googleapis\.com\/[^/]+\/([^?]+)/i)
   if (m2) {
     try {
@@ -38,24 +44,31 @@ function extractStoragePath(url: string): string | null {
   return null
 }
 
-/** 把 CMS Storage path → snapshot 內的本機路徑 */
-function mapStoragePathToSnapshot(path: string, lessonKey: string): string | null {
-  // images: units/{u}/images/cropped/{file}  → 取 cropped 後的 file 名
-  const imgMatch = path.match(/^units\/([^/]+)\/images\/cropped\/(.+)$/)
+function buildCoinQuestUrl(mirrorPath: string): string {
+  return `${STORAGE_BASE}/${encodeURIComponent(mirrorPath)}?alt=media`
+}
+
+/** CMS Storage path → coin-quest cms-mirror path */
+function mapCmsPathToMirror(path: string, lessonKey: string): string | null {
+  // images: units/{u}/images/cropped|grid/{file}
+  const imgMatch = path.match(/^units\/([^/]+)\/images\/(?:cropped|grid)\/(.+)$/)
   if (imgMatch) {
-    return `/cms-snapshot/${lessonKey}/units/${imgMatch[1]}/images/${imgMatch[2]}`
+    const { stageId, lessonId } = parseLessonFolder(lessonKey)
+    return `cms-mirror/stages/${stageId}/lessons/${lessonId}/units/${imgMatch[1]}/images/${imgMatch[2]}`
   }
-  // voices: units/{u}/voices/{lang}/{file} → snapshot 把 lang 與 file 合成一個檔名
+  // voices: units/{u}/voices/{lang}/{section}_{N}.{ext}
+  // sync 把 {lang} 與 {file} 合成檔名（zh_story_0.wav）
   const voiceMatch = path.match(/^units\/([^/]+)\/voices\/([^/]+)\/(.+)$/)
   if (voiceMatch) {
-    return `/cms-snapshot/${lessonKey}/units/${voiceMatch[1]}/voices/${voiceMatch[2]}_${voiceMatch[3]}`
+    const { stageId, lessonId } = parseLessonFolder(lessonKey)
+    return `cms-mirror/stages/${stageId}/lessons/${lessonId}/units/${voiceMatch[1]}/voices/${voiceMatch[2]}_${voiceMatch[3]}`
   }
   // backgrounds
   const bgMatch = path.match(/^assets\/backgrounds\/(.+)$/)
-  if (bgMatch) return `/cms-snapshot/${lessonKey}/assets/backgrounds/${bgMatch[1]}`
+  if (bgMatch) return `cms-mirror/shared/backgrounds/${bgMatch[1]}`
   // characters
   const charMatch = path.match(/^assets\/characters\/(.+)$/)
-  if (charMatch) return `/cms-snapshot/${lessonKey}/assets/characters/${charMatch[1]}`
+  if (charMatch) return `cms-mirror/shared/characters/${charMatch[1]}`
   return null
 }
 
@@ -65,6 +78,6 @@ export function proxifyStorageUrl(url?: string | null): string | undefined {
   if (!currentLessonKey) return url
   const path = extractStoragePath(url)
   if (!path) return url
-  const mapped = mapStoragePathToSnapshot(path, currentLessonKey)
-  return mapped ?? url
+  const mapped = mapCmsPathToMirror(path, currentLessonKey)
+  return mapped ? buildCoinQuestUrl(mapped) : url
 }

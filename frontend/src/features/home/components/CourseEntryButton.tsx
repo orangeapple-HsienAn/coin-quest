@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { tUI } from '@/lib/uiStrings'
 
 /**
  * 進入課程按鈕
@@ -14,7 +15,7 @@ export function CourseEntryButton() {
         <span className="text-3xl">🦥</span>
       </div>
 
-      <span className="text-2xl font-bold text-coral">進入課程</span>
+      <span className="text-2xl font-bold text-coral">{tUI('進入課程')}</span>
     </Link>
   )
 }

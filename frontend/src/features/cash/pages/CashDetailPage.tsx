@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useUser } from '@/hooks/useUser'
 import { Header } from '@/components/layout/Header'
 import { formatCoin } from '@/lib/utils'
+import { tUI } from '@/lib/uiStrings'
 import type { CashTransaction } from '@/types'
 
 // 類別顯示名稱對照表
@@ -65,35 +66,35 @@ export function CashDetailPage() {
       <Header
         experience={user?.experience ?? 0}
         coins={user?.coins ?? 0}
-        displayName={user?.displayName ?? '叩叮'}
+        displayName={user?.displayName ?? tUI('叩叮')}
         backTo="/"
       />
 
       <main className="mx-auto max-w-[800px] px-6 py-8">
         {/* 標題 */}
         <h1 className="mb-6 text-center text-xl font-bold text-primary">
-          ⭐ 可用現金明細 ⭐
+          {tUI('⭐ 可用現金明細 ⭐')}
         </h1>
 
         {/* 交易紀錄表格 */}
         <div className="overflow-hidden rounded-[16px] border border-[#F0E6D8] bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
           {/* 表頭 */}
           <div className="grid grid-cols-4 bg-cash-green px-4 py-3 text-sm font-medium text-white">
-            <div>類別</div>
-            <div className="text-right">金額</div>
-            <div className="text-center">備註</div>
-            <div className="text-right">時間</div>
+            <div>{tUI('類別')}</div>
+            <div className="text-right">{tUI('金額')}</div>
+            <div className="text-center">{tUI('備註')}</div>
+            <div className="text-right">{tUI('時間')}</div>
           </div>
 
           {/* 表格內容 */}
           {isLoading ? (
-            <div className="px-4 py-8 text-center text-text-secondary">載入中...</div>
+            <div className="px-4 py-8 text-center text-text-secondary">{tUI('載入中...')}</div>
           ) : transactions.length === 0 ? (
-            <div className="px-4 py-8 text-center text-text-secondary">尚無交易紀錄</div>
+            <div className="px-4 py-8 text-center text-text-secondary">{tUI('尚無交易紀錄')}</div>
           ) : (
             <div className="divide-y divide-[#F0E6D8]">
               {transactions.map((tx) => {
-                const label = CATEGORY_LABELS[tx.category] || '其他'
+                const label = tUI(CATEGORY_LABELS[tx.category] || '其他')
                 // 類別文字顏色：流入綠色、流出紅色
                 const categoryColor = tx.amount >= 0 ? 'text-gain-green' : 'text-loss-red'
 
